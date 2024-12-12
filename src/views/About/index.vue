@@ -5,81 +5,68 @@
 </template>
 
 <script setup lang="ts">
+// http://www.hewebgl.com/article/getarticle/56
 import * as THREE from 'three';
+
 let scene: any = null;
 let renderer: any = null;
 let camera: any = null;
-let light: any = null;
+let cube: any = null;
 let width: any = null;
 let height: any = null;
-const wrapperDom: any = document.querySelector('.webgl-wrapper');
-console.log(wrapperDom);
-
-const initScene = () => {
-    scene = new THREE.Scene(); // 场景
-};
 const initThree = () => {
-    console.log(wrapperDom);
+    const wrapperDom: any = document.querySelector('.webgl-wrapper');
     width = wrapperDom.clientWidth;
     height = wrapperDom.clientHeight;
-    renderer = new THREE.WebGLRenderer({
-        antialias: true,
-    });
+    renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
     wrapperDom.appendChild(renderer.domElement);
     renderer.setClearColor(0xffffff, 1.0);
 };
 
+const initScene = () => {
+    scene = new THREE.Scene(); // 场景
+};
+
 const initCamera = () => {
-    camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-    camera.position.x = 0;
-    camera.position.y = 1000;
-    camera.position.z = 0;
-    camera.up.x = 0;
-    camera.up.y = 0;
-    camera.up.z = 1;
-    camera.lookAt({
-        x: 0,
-        y: 0,
-        z: 0,
-    });
+    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    // camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+    // camera.position.x = 0;
+    // camera.position.y = 1000;
+    camera.position.z = 5;
+    // camera.up.x = 0;
+    // camera.up.y = 0;
+    // camera.up.z = 1;
+    // camera.lookAt({
+    //     x: 0,
+    //     y: 0,
+    //     z: 0,
+    // });
 };
 
-const initLight = () => {
-    light = new THREE.DirectionalLight(0xff0000, 1.0, 0);
-    light.position.set(100, 100, 200);
-    scene.add(light);
-};
+// const initLight = () => {
+//     light = new THREE.DirectionalLight(0xff0000, 1.0, 0);
+//     light.position.set(100, 100, 200);
+//     scene.add(light);
+// };
 const initObject = () => {
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.LineBasicMaterial({
-        vertexColors: THREE.VertexColors,
-    });
-    const color1 = new THREE.Color(0x444444),
-        color2 = new THREE.Color(0xff0000);
-
-    // 线的材质可以由2点的颜色决定
-    const p1 = new THREE.Vector3(-100, 0, 100);
-    const p2 = new THREE.Vector3(100, 0, -100);
-    geometry.vertices.push(p1);
-    geometry.vertices.push(p2);
-    geometry.colors.push(color1, color2);
-
-    const line = new THREE.Line(geometry, material, THREE.LinePieces);
-    scene.add(line);
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 };
 
 const render = () => {
-    renderer.clear();
-    renderer.render(scene, camera);
     requestAnimationFrame(render);
+    cube.rotation.x += 0.1;
+    cube.rotation.y += 0.1;
+    renderer.render(scene, camera);
 };
 
 const threeStart = () => {
     initThree();
     initCamera();
     initScene();
-    initLight();
     initObject();
     render();
 };
@@ -113,9 +100,8 @@ const initCanvas = () => {
     render();
 };
 onMounted(() => {
-    // initThree();
+    console.log(initCanvas);
     threeStart();
-    initCanvas();
 });
 </script>
 
