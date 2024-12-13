@@ -38,7 +38,7 @@ const initLight = () => {
     light.position.set(100, 100, 200);
     scene!.add(light);
 };
-function initObject() {
+const initObject = () => {
     const geometry = new THREE.BufferGeometry();
     const material = new THREE.LineBasicMaterial({ vertexColors: true });
     const color1 = new THREE.Color(0x444444);
@@ -58,9 +58,9 @@ function initObject() {
 
     const line = new THREE.Line(geometry, material);
     scene!.add(line);
-}
+};
 
-function threeStart() {
+const threeStart = () => {
     initThree();
     initCamera();
     initScene();
@@ -68,7 +68,7 @@ function threeStart() {
     initObject();
     renderer!.clear();
     renderer!.render(scene!, camera!);
-}
+};
 
 onMounted(() => {
     threeStart();
